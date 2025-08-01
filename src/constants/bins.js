@@ -4,4 +4,5 @@ export const BINTYPES = {
     GLASS: "glass",
     COMPOST: "compost",
     DEPOT: "depot",
+    TRASH: "trash",
 }

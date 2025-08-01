@@ -15,27 +15,26 @@
     </div>
 </template>
 <script setup>
-import { reactive, ref } from 'vue'
+import { ref } from 'vue'
 import { BINTYPES } from '@/constants/bins'
-import noImage from '@/images/no-image.png'
-import newspaper from '@/images/part-1.png'
+import { IMAGESOURCE } from '@/constants/images'
 const parts =
     [
         {
             name: "Newspaper",
-            source: newspaper,
+            source: IMAGESOURCE.NEWSPAPER,
             alternative: "Newspaper",
             bin: BINTYPES.PAPER,
         },
         {
             name: "Aluminum Can",
-            source: "You don't have to worry",
+            source: IMAGESOURCE.TINCAN,
             alternative: "Aluminum Can",
             bin: BINTYPES.CONTAINERS,
         },
         {
             name: "Plastic Yogurt Container",
-            source: "You don't have to worry",
+            source: IMAGESOURCE.YOGURT,
             alternative: "Plastic Yogurt Container",
             bin: BINTYPES.CONTAINERS,
         },

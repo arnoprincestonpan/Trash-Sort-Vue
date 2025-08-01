@@ -1,9 +1,7 @@
 <template>
     <div class="container-fluid">
         <Parts></Parts>
-        <div class="w-100 d-flex flex-row flex-wrap ">
-            <Bins></Bins>
-        </div>
+        <Bins></Bins>
     </div>
 </template>
 <script setup>
