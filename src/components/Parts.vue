@@ -17,8 +17,8 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import { BINTYPES } from '@/constants/bins'
-import noImage from '../../public/images/no-image.png'
-import newspaper from '../../public/images/part-1.png'
+import noImage from '@/images/no-image.png'
+import newspaper from '@/images/part-1.png'
 const parts =
     [
         {

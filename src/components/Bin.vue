@@ -8,13 +8,14 @@
     </div>
 </template>
 <script setup>
-import { reactive } from 'vue'
-
-const bin = reactive({
-    source: "",
-    alternative: "",
-    title: "",
-    description: "",
-})
+import { defineProps } from 'vue'
+const bin = defineProps(
+    {
+        source: "",
+        alternative: "",
+        title: "",
+        description: "",
+    }
+)
 
 </script>
