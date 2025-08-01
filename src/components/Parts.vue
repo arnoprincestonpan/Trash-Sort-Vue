@@ -10,12 +10,13 @@
         <p class="text-center">Select the proper container where the part should be placed.</p>
         <div class="p-3 gap-1 d-flex justify-content-center flex-wrap flex-row">
             <button @click="handleBinSelection(type.name)" v-for="type in binType" :class="type.buttonColor" class="border col-sm">{{ type.name }}</button>
-            <button @click="handleNextButton" class="btn btn-success border">Next</button>
+            <button @click="handleNextButton" class="btn btn-danger border">Next</button>
         </div>
     </div>
 </template>
 <script setup>
 import { reactive, ref } from 'vue'
+import { BINTYPES } from '@/constants/bins'
 import noImage from '../../public/images/no-image.png'
 import newspaper from '../../public/images/part-1.png'
 const parts =
@@ -24,61 +25,73 @@ const parts =
             name: "Newspaper",
             source: newspaper,
             alternative: "Newspaper",
-            bin: "paper"
+            bin: BINTYPES.PAPER,
         },
         {
             name: "Aluminum Can",
             source: "You don't have to worry",
             alternative: "Aluminum Can",
-            bin: "containers"
+            bin: BINTYPES.CONTAINERS,
         },
         {
             name: "Plastic Yogurt Container",
             source: "You don't have to worry",
             alternative: "Plastic Yogurt Container",
-            bin: "containers"
+            bin: BINTYPES.CONTAINERS,
         },
         {
             name: "Glass Jar (empty & clean)",
             source: "You don't have to worry",
             alternative: "Glass Jar",
-            bin: "glass"
+            bin: BINTYPES.GLASS,
         },
         {
             name: "Magazines",
             source: "You don't have to worry",
             alternative: "Magazine",
-            bin: "paper"
+            bin: BINTYPES.PAPER,
         },
         {
             name: "Steel Food Can",
             source: "You don't have to worry",
             alternative: "Steel Food Can",
-            bin: "containers"
+            bin: BINTYPES.CONTAINERS,
         },
         {
             name: "Old Cell Phone",
             source: "You don't have to worry",
             alternative: "Old Cell Phone",
-            bin: "depot"
+            bin: BINTYPES.DEPOT,
         },
         {
             name: "Plastic Grocery Bag",
             source: "You don't have to worry",
             alternative: "Plastic Grocery Bag",
-            bin: "plastic film"
+            bin: BINTYPES.DEPOT,
         },
         {
             name: "Broken Television",
             source: "You don't have to worry",
             alternative: "Broken Television",
-            bin: "depot"
+            bin: BINTYPES.DEPOT,
         },
         {
             name: "Egg Cartons (cardboard)",
             source: "You don't have to worry",
             alternative: "Egg Cartons",
-            bin: "paper"
+            bin: BINTYPES.PAPER,
+        },
+        {
+            name: "Half Eaten Chicken Leg",
+            source: "",
+            alternative: "Half Eaten Chicken Leg",
+            bin: BINTYPES.COMPOST,
+        },
+        {
+            name: "Used Tea Bags",
+            source: "",
+            alternative: "Used Tea Bags",
+            bin: BINTYPES.COMPOST,
         }
     ]
 
@@ -115,6 +128,10 @@ const binType = [
     {
         name: "trash",
         buttonColor: "btn btn-dark",
+    },
+    {
+        name: "compost",
+        buttonColor: "btn btn-success",
     },
     {
         name: "depot",
