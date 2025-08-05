@@ -3,7 +3,7 @@
         <h2>Parts</h2>
         <div class="text-center">
             <figure class="figure">
-                <img :src="parts[current].source || noImage" class="figure-img img-fluid rounded" style="max-width: 300px;">
+                <img :src="parts[current].source || noImage" class="figure-img img-fluid rounded" style="max-width: 300px;" :class="highlightImage">
                 <figcaption class="figure-caption">{{parts[current].alternative }}</figcaption>
             </figure>
         </div>
@@ -16,8 +16,10 @@
 </template>
 <script setup>
 import { ref } from 'vue'
-import { BINTYPES } from '@/constants/bins'
+import { BINSTYLES, BINTYPES } from '@/constants/bins'
 import { IMAGESOURCE } from '@/constants/images'
+import { IMAGEHIGHLIGHTS } from '@/constants/imageHighlights'
+
 const parts =
     [
         {
@@ -97,11 +99,23 @@ const parts =
 const current = ref(0)
 const selections = ref([parts.length])
 const selected = ref("")
+const highlightImage = ref(IMAGEHIGHLIGHTS.default.toString())
+
 
 const handleBinSelection = (selection) => {
     console.log("Number of Selections: ", parts.length)
     console.log(`Clicked:`, selection)
     selected.value = selection
+    handleImageHighlight()
+}
+
+const handleImageHighlight = () => {
+    if(!selected.value || selected.value == undefined)return
+    if(!IMAGEHIGHLIGHTS[selected.value])return
+    console.log(IMAGEHIGHLIGHTS)
+    console.log(IMAGEHIGHLIGHTS[selected.value])
+    console.log(IMAGEHIGHLIGHTS[selected.value].toString())
+    highlightImage.value = IMAGEHIGHLIGHTS[selected.value].toString()
 }
 
 const handleNextButton = () => {
@@ -113,28 +127,28 @@ const handleNextButton = () => {
 
 const binType = [
     {
-        name: "paper",
-        buttonColor: "btn btn-warning",
+        name: BINTYPES.PAPER,
+        buttonColor: BINSTYLES.PAPER
     },
     {
-        name: "container",
-        buttonColor: "btn btn-primary",
+        name: BINTYPES.CONTAINERS,
+        buttonColor: BINSTYLES.CONTAINERS,
     },
     {
-        name: "glass",
-        buttonColor: "btn btn-secondary",
+        name: BINTYPES.GLASS,
+        buttonColor: BINSTYLES.GLASS,
     },
     {
-        name: "trash",
-        buttonColor: "btn btn-dark",
+        name: BINTYPES.TRASH,
+        buttonColor: BINSTYLES.TRASH,
     },
     {
-        name: "compost",
-        buttonColor: "btn btn-success",
+        name: BINTYPES.COMPOST,
+        buttonColor: BINSTYLES.COMPOST,
     },
     {
-        name: "depot",
-        buttonColor: "btn btn-light",
+        name: BINTYPES.DEPOT,
+        buttonColor: BINSTYLES.DEPOT,
     },
 ]
 </script>
