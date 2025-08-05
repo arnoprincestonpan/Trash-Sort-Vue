@@ -1,23 +1,27 @@
 <template>
     <div class="border rounded p-1 mt-2 mb-1">
         <h2>Parts</h2>
+        <div v-if="results !== ''">
+            {{ results }}
+        </div>
         <div class="text-center">
             <figure class="figure">
-                <img :src="parts[current].source || noImage" class="figure-img img-fluid rounded" style="max-width: 300px;" :class="highlightImage">
+                <img :src="parts[current].source || NOIMAGE" class="figure-img img-fluid rounded" style="max-width: 300px;" :class="highlightImage">
                 <figcaption class="figure-caption">{{parts[current].alternative }}</figcaption>
             </figure>
         </div>
         <p class="text-center">Select the proper container where the part should be placed.</p>
         <div class="p-3 gap-1 d-flex justify-content-center flex-wrap flex-row">
             <button @click="handleBinSelection(type.name)" v-for="type in binType" :class="type.buttonColor" class="border col-sm">{{ type.name }}</button>
-            <button @click="handleNextButton" class="btn btn-danger border">Next</button>
+            <button v-if="current < parts.length - 1" @click="handleNextButton" class="btn btn-danger border">Next</button>
+            <button v-else @click="submit = !submit" class="btn btn-danger border">Submit</button>
         </div>
     </div>
 </template>
 <script setup>
 import { ref } from 'vue'
 import { BINSTYLES, BINTYPES } from '@/constants/bins'
-import { IMAGESOURCE } from '@/constants/images'
+import { IMAGESOURCE, NOIMAGE } from '@/constants/images'
 import { IMAGEHIGHLIGHTS } from '@/constants/imageHighlights'
 
 const parts =
@@ -30,7 +34,7 @@ const parts =
         },
         {
             name: "Aluminum Can",
-            source: IMAGESOURCE.TINCAN,
+            source: IMAGESOURCE.SODACAN,
             alternative: "Aluminum Can",
             bin: BINTYPES.CONTAINERS,
         },
@@ -42,55 +46,55 @@ const parts =
         },
         {
             name: "Glass Jar (empty & clean)",
-            source: "You don't have to worry",
+            source: IMAGESOURCE.GLASSJAR,
             alternative: "Glass Jar",
             bin: BINTYPES.GLASS,
         },
         {
             name: "Magazines",
-            source: "You don't have to worry",
+            source: IMAGESOURCE.MAGAZINE,
             alternative: "Magazine",
             bin: BINTYPES.PAPER,
         },
         {
             name: "Steel Food Can",
-            source: "You don't have to worry",
+            source: IMAGESOURCE.TINCAN,
             alternative: "Steel Food Can",
             bin: BINTYPES.CONTAINERS,
         },
         {
             name: "Old Cell Phone",
-            source: "You don't have to worry",
+            source: IMAGESOURCE.PHONE,
             alternative: "Old Cell Phone",
             bin: BINTYPES.DEPOT,
         },
         {
             name: "Plastic Grocery Bag",
-            source: "You don't have to worry",
+            source: IMAGESOURCE.PLASTICBAG,
             alternative: "Plastic Grocery Bag",
             bin: BINTYPES.DEPOT,
         },
         {
             name: "Broken Television",
-            source: "You don't have to worry",
+            source: IMAGESOURCE.BROKENTV,
             alternative: "Broken Television",
             bin: BINTYPES.DEPOT,
         },
         {
             name: "Egg Cartons (cardboard)",
-            source: "You don't have to worry",
+            source: IMAGESOURCE.EMPTYCARTONPAPER,
             alternative: "Egg Cartons",
             bin: BINTYPES.PAPER,
         },
         {
             name: "Half Eaten Chicken Leg",
-            source: "",
+            source: IMAGESOURCE.HALFEATENDRUMSTICK,
             alternative: "Half Eaten Chicken Leg",
             bin: BINTYPES.COMPOST,
         },
         {
             name: "Used Tea Bags",
-            source: "",
+            source: IMAGESOURCE.USEDTEABAGS,
             alternative: "Used Tea Bags",
             bin: BINTYPES.COMPOST,
         }
@@ -100,6 +104,8 @@ const current = ref(0)
 const selections = ref([parts.length])
 const selected = ref("")
 const highlightImage = ref(IMAGEHIGHLIGHTS.default.toString())
+const submit = ref(false)
+let results = ref("")
 
 
 const handleBinSelection = (selection) => {
@@ -119,10 +125,30 @@ const handleImageHighlight = () => {
 }
 
 const handleNextButton = () => {
+    if((current.value - 1) >= selections.value)return
     if(selected.value === "")return
     console.log('Selection:', selected.value)
-    selections.value[current] = selected.value
-    console.log(`Selections at Array: ${selections.value[current]}`)
+    selections.value[current.value] = selected.value
+    console.log(`Selections at Array: ${selections.value[current.value]}`)
+    current.value = current.value + 1
+    console.log(`Current Selections Index ${current.value}`)
+}
+
+const handleResults = () => {
+    results += ``
+    let points = 0
+    results += `<ul>`
+    parts.map((part) => selections.value.map((selection, index) => {
+        results += `<li>`
+        if(selection.toString().toLowerCase() === part.toString().toLowerCase()){
+            results += `CORRECT: ${++index}.): ${part.name.charAt(0).toUpperCase() + part.name.slice(1)} belongs in the ${BINTYPES.PAPER} bins.`
+            points++
+        }else {
+            results += `INCORRECT: ${++index}.): ${part.name.charAt(0).toUpperCase() + part.name.slice(1)} belongs in the ${BINTYPES.PAPER} bins.`
+        }
+        results += `</li>`
+    }))
+    results += `</ul>`
 }
 
 const binType = [
